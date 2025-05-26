@@ -1,0 +1,46 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    network_mode: "host"
+    volumes:
+      - ./config.yml:/etc/cloudflared/config.yml
+      - ./cd8ccc68-6dcd-4d99-b749-c9480b6e5699.json:/etc/cloudflared/cd8ccc68-6dcd-4d99-b749-c9480b6e5699.json
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - /mnt/Main/Configs/Jellyfin:/config
+      - /mnt/Main/Media/Movies:/media/Movies:ro
+      - /mnt/Main/Media/TV_Shows:/media/tv_shows:ro
+      - /mnt/Main/Media/Family:/media/Family:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://media.danieljh.uk
+  netdata:
+    image: netdata/netdata
+    container_name: netdata
+    restart: unless-stopped
+    ports:
+      - 19999:19999
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
+    volumes:
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - NETDATA_CLAIM_TOKEN=
+      - NETDATA_CLAIM_URL=
+      - NETDATA_CLAIM_ROOM=
+      - DO_NOT_TRACK=1

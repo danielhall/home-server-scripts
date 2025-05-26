@@ -19,16 +19,16 @@ It enables:
 
 ## 1. Copy the Setup Script
 
-Save the provided `setup-home-vpn.sh` file to your Pi and make it executable:
+Save the provided `pihole-tailscale-setup.sh` file to your Pi and make it executable:
 
 ```bash
-chmod +x setup-home-vpn.sh
+chmod +x pihole-tailscale-setup.sh
 ```
 
 ## 2. Run the Script
 
 ```bash
-./setup-home-vpn.sh
+./pihole-tailscale-setup.sh
 ```
 
 This will:
